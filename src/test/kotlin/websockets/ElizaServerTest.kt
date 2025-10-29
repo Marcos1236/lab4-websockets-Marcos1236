@@ -8,7 +8,6 @@ import jakarta.websocket.ContainerProvider
 import jakarta.websocket.OnMessage
 import jakarta.websocket.Session
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -50,31 +49,24 @@ class ElizaServerTest {
 
         // 1. EXPLAIN WHY size = list.size IS NECESSARY
 
-        /** 
-          * Guardamos size en una variable para capturar el valor en este punto del tiempo,
-          * porque list.size podría cambiar por concurrencia si llegaran más mensajes.
-          */
-
+        // Guardamos size en una variable para capturar el valor en este punto del tiempo,
+        // porque list.size podría cambiar por concurrencia si llegaran más mensajes.
 
         // 2. REPLACE BY assertXXX expression that checks an interval; assertEquals must not be used;
-        
-        /** 
-          * Usamos assertTrue(size >= 4) en vez de assertEquals para tolerar variaciones en timing.
-          */
 
-        org.junit.jupiter.api.Assertions.assertTrue(size >= 4)
+        // Usamos assertTrue(size >= 4) en vez de assertEquals para tolerar variaciones en timing.
 
+        org.junit.jupiter.api.Assertions
+            .assertTrue(size >= 4)
 
-        // 3. EXPLAIN WHY assertEquals CANNOT BE USED AND WHY WE SHOULD CHECK THE INTERVAL 
+        // 3. EXPLAIN WHY assertEquals CANNOT BE USED AND WHY WE SHOULD CHECK THE INTERVAL
 
-        /**
-         * assertEquals es frágil en tests asíncronos: la cantidad exacta de mensajes puede variar por
-         * latencia/ordenación. Comprobar un intervalo o una condición más general evita falsos fallos.
-         */
-        
+        // assertEquals es frágil en tests asíncronos: la cantidad exacta de mensajes puede variar por
+        // latencia/ordenación. Comprobar un intervalo o una condición más general evita falsos fallos.
 
         // 4. COMPLETE assertEquals(XXX, list[XXX])
-        org.junit.jupiter.api.Assertions.assertEquals("The doctor is in.", list[0])
+        org.junit.jupiter.api.Assertions
+            .assertEquals("The doctor is in.", list[0])
     }
 }
 
