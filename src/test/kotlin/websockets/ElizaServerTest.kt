@@ -36,7 +36,6 @@ class ElizaServerTest {
         assertEquals("The doctor is in.", list[0])
     }
 
-    @Disabled // Remove this line when you implement onChat
     @Test
     fun onChat() {
         logger.info { "Test thread" }
@@ -46,11 +45,36 @@ class ElizaServerTest {
         val client = ComplexClient(list, latch)
         client.connect("ws://localhost:$port/eliza")
         latch.await()
+
         val size = list.size
+
         // 1. EXPLAIN WHY size = list.size IS NECESSARY
+
+        /** 
+          * Guardamos size en una variable para capturar el valor en este punto del tiempo,
+          * porque list.size podría cambiar por concurrencia si llegaran más mensajes.
+          */
+
+
         // 2. REPLACE BY assertXXX expression that checks an interval; assertEquals must not be used;
-        // 3. EXPLAIN WHY assertEquals CANNOT BE USED AND WHY WE SHOULD CHECK THE INTERVAL
+        
+        /** 
+          * Usamos assertTrue(size >= 4) en vez de assertEquals para tolerar variaciones en timing.
+          */
+
+        org.junit.jupiter.api.Assertions.assertTrue(size >= 4)
+
+
+        // 3. EXPLAIN WHY assertEquals CANNOT BE USED AND WHY WE SHOULD CHECK THE INTERVAL 
+
+        /**
+         * assertEquals es frágil en tests asíncronos: la cantidad exacta de mensajes puede variar por
+         * latencia/ordenación. Comprobar un intervalo o una condición más general evita falsos fallos.
+         */
+        
+
         // 4. COMPLETE assertEquals(XXX, list[XXX])
+        org.junit.jupiter.api.Assertions.assertEquals("The doctor is in.", list[0])
     }
 }
 
@@ -73,7 +97,6 @@ class ComplexClient(
     private val latch: CountDownLatch,
 ) {
     @OnMessage
-    @Suppress("UNUSED_PARAMETER") // Remove this line when you implement onMessage
     fun onMessage(
         message: String,
         session: Session,
@@ -81,9 +104,11 @@ class ComplexClient(
         logger.info { "Client received: $message" }
         list.add(message)
         latch.countDown()
-        // 5. COMPLETE if (expression) {
-        // 6. COMPLETE   sentence
-        // }
+
+        if (message.contains("What's on your mind") || message.contains("What's on your mind?")) {
+            // send a test message that should trigger ELIZA's "i am" rule
+            session.basicRemote.sendText("I am feeling sad")
+        }
     }
 }
 
