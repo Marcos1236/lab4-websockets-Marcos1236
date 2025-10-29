@@ -100,7 +100,7 @@ class ComplexClient(
         latch.countDown()
 
         if (message.contains("What's on your mind") || message.contains("What's on your mind?")) {
-            // send a test message that should trigger ELIZA's "i am" rule
+            // Enviar un mensaje de prueba al servidor Eliza que debería accionar una regla.
             session.basicRemote.sendText("I am feeling sad")
         }
     }
