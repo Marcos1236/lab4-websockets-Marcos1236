@@ -61,10 +61,12 @@ class ElizaServerTest {
 
         // 3. EXPLAIN WHY assertEquals CANNOT BE USED AND WHY WE SHOULD CHECK THE INTERVAL
 
-        // assertEquals es frágil en tests asíncronos: la cantidad exacta de mensajes puede variar por
+        // assertEquals es frágil en tests asíncronos ya que la cantidad exacta de mensajes puede variar por
         // latencia/ordenación. Comprobar un intervalo o una condición más general evita falsos fallos.
 
         // 4. COMPLETE assertEquals(XXX, list[XXX])
+
+        // Comprobamos que el mensaje inicial es correcto.
         org.junit.jupiter.api.Assertions
             .assertEquals("The doctor is in.", list[0])
     }
