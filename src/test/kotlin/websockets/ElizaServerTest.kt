@@ -54,7 +54,7 @@ class ElizaServerTest {
 
         // 2. REPLACE BY assertXXX expression that checks an interval; assertEquals must not be used;
 
-        // Usamos assertTrue(size >= 3 && size <= 4) en vez de assertEquals para tolerar variaciones en timing.
+        // Usamos assertTrue(size >= 4 && size <= 5) en vez de assertEquals para tolerar variaciones en timing.
 
         org.junit.jupiter.api.Assertions
             .assertTrue(size >= 4 && size <= 5)
